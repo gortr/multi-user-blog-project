@@ -195,11 +195,11 @@ class EditPost(BlogHandler):
 				self.error(404)
 				return
 
-			post.subject = subject
-			post.content = content
-			post.put()
-
 			if post.user_id == self.user.key().id():
+				post.subject = subject
+				post.content = content
+				post.put()
+
 				self.redirect('/blog/%s' % post_id)
 		else:
 			error = "subject and content, please!"
@@ -259,10 +259,11 @@ class EditComment(BlogHandler):
 		if comment:
 			key = db.Key.from_path('Comment', int(comment_id), parent = blog_key())
 			c = db.get(key)
-			c.comment = comment
-			c.put()
 
 			if c.user_id == self.user.key().id():
+				c.comment = comment
+				c.put()
+
 				self.redirect('/blog/%s' % post_id)
 		else:
 			error = "subject and content, please"
