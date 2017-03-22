@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div>
+        <div>
+            {% if error %}
+                <div class="alert">{{error}}</div>
+            {% endif %}
+        </div>
+        <div class="col-md-5">
+            <a id="post-delete" href="/blog/deletepost/{{post.key().id()}}">Delete</a>
+            <a id="post-edit" href="/blog/editpost/{{post.key().id()}}">Edit</a>
+        </div>
+        {{post.render() | safe}}
+    </div>
+
+    <div>
+        <div>
+            <form method="post">
+                <input type="hidden" id="like" name="like" value="update">
+                <button type="submit">Like {{numOfLikes}}</button>
+            </form>
+        </div>
+
+        <div>
+            <form method="post">
+                <div>
+                    <label for="comment">Comment:</label>
+                    <input type="text" id="comment" name="comment" value="">
+                </div>
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+
+        <div>
+            {% for c in comments %}
+            <blockquote>
+                <a class="comment-delete" href="/blog/deletecomment/{{post.key().id()}}/{{c.key().id()}}">Delete</a>
+                <a class="comment-edit" href="/blog/editcomment/{{post.key().id()}}/{{c.key().id()}}">Edit</a>
+                <p>{{ c.comment }}</p>
+                <footer>{{ c.getUserName() }}</footer>
+            </blockquote>
+            {% endfor %}
+        </div>
+
+    </div>
+{% endblock %}

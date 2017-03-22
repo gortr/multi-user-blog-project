@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+	{% if deleted_post_id %}
+		<div class="alert">
+			Post Deleted Successfully
+		</div>
+	{% endif %}
+
+	{% for p in posts %}
+  		{% if p.key().id()|string != deleted_post_id|string %}
+    		{{ p.render() | safe }}
+    		<br><br>
+    	{% endif %}
+	{% endfor %}
+
+{% endblock %}
