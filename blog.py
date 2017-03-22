@@ -199,7 +199,8 @@ class EditPost(BlogHandler):
 			post.content = content
 			post.put()
 
-			self.redirect('/blog/%s' % post_id)
+			if post.user_id == self.user.key().id():
+				self.redirect('/blog/%s' % post_id)
 		else:
 			error = "subject and content, please!"
 			self.render("editpost.html", subject=subject, content=content, error=error)
@@ -260,7 +261,9 @@ class EditComment(BlogHandler):
 			c = db.get(key)
 			c.comment = comment
 			c.put()
-			self.redirect('/blog/%s' % post_id)
+
+			if c.user_id == self.user.key().id():
+				self.redirect('/blog/%s' % post_id)
 		else:
 			error = "subject and content, please"
 			self.render("editcomment.html", subject = subject, comment = comment,
@@ -274,6 +277,11 @@ class DeleteComment(BlogHandler):
 			key = db.Key.from_path('Comment', int(comment_id), parent = blog_key())
 
 			c = db.get(key)
+
+			if not c:
+				self.error(404)
+				return
+				
 			if c.user_id == self.user.key().id():
 				c.delete()
 				self.redirect("/blog/" + post_id + "?deleted_comment_id=" + comment_id)
