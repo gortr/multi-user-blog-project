@@ -164,6 +164,11 @@ class EditPost(BlogHandler):
 		if self.user:
 			key = db.Key.from_path('Post', int(post_id), parent = blog_key())
 			post = db.get(key)
+
+			if not post:
+				self.error(404)
+				return
+
 			if post.user_id == self.user.key().id():
 				self.render('editpost.html', subject = post.subject, 
 							content = post.content)
@@ -185,6 +190,11 @@ class EditPost(BlogHandler):
 		if subject and content:
 			key = db.Key.from_path('Post', int(post_id), parent = blog_key())
 			post = db.get(key)
+
+			if not post:
+				self.error(404)
+				return
+
 			post.subject = subject
 			post.content = content
 			post.put()
@@ -201,6 +211,11 @@ class DeletePost(BlogHandler):
 		if self.user:
 			key = db.Key.from_path('Post', int(post_id), parent = blog_key())
 			post = db.get(key)
+
+			if not post:
+				self.error(404)
+				return
+
 			if post.user_id == self.user.key().id():
 				post.delete()
 				self.redirect("/blog/?deleted_post_id=" + post_id)
@@ -219,6 +234,11 @@ class EditComment(BlogHandler):
 			key = db.Key.from_path('Comment', int(comment_id), parent = blog_key())
 
 			c = db.get(key)
+
+			if not c:
+				self.error(404)
+				return
+
 			if c.user_id == self.user.key().id():
 				self.render("editcomment.html", comment = c.comment)
 			else:
@@ -267,17 +287,17 @@ class DeleteComment(BlogHandler):
 
 # --- User Registration --->
 
-USER_RE = re.compile(r"^[a-zA-Z0-9_-]{3,20}$")
 def valid_username(username):
-    return username and USER_RE.match(username)
+	USER_RE = re.compile(r"^[a-zA-Z0-9_-]{3,20}$")
+	return username and USER_RE.match(username)
 
-PASS_RE = re.compile(r"^.{3,20}$")
 def valid_password(password):
-    return password and PASS_RE.match(password)
+	PASS_RE = re.compile(r"^.{3,20}$")
+	return password and PASS_RE.match(password)
 
-EMAIL_RE  = re.compile(r'^[\S]+@[\S]+\.[\S]+$')
 def valid_email(email):
-    return not email or EMAIL_RE.match(email)
+	EMAIL_RE  = re.compile(r'^[\S]+@[\S]+\.[\S]+$')
+	return not email or EMAIL_RE.match(email)
 
 class Signup(BlogHandler):
 	def get(self):

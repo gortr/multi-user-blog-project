@@ -32,4 +32,9 @@ NOTE: Keep in mind that ending . is not a period but a part of of the code neces
 4.) Once the command has executed you will type localhost:8080/blog.
 5.) From there you will be able to view the main blog page, login, and signup from the main page. In order to add a newpost you would simply add /newpost to the url at the top after localhost:8080/blog
 
+
+The public URL for the project to see it running is as follows,
+
+https://multi-user-blog-project-162306.appspot.com/blog
+
 ------------- end of read_me.txt -------------
